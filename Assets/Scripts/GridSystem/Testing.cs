@@ -22,7 +22,7 @@ public class Testing : MonoBehaviour
 
     private void Start()
     {
-        var offset = new Vector3(20, 0);
+        var offset = new Vector3(0, 0);
         var gridWidth = 10;
         var gridHeight = 10;
         var cellSize = 10f;

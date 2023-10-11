@@ -131,7 +131,8 @@ public class GridTest<T>
     private Vector3 GetWorldPosition(int x, int y) => new Vector3(x, y) * cellSize + originPosition;
     private Vector2Int GetXY(Vector3 worldPosition)
     {
-        var floored = Vector3Int.FloorToInt((worldPosition - originPosition) / cellSize);
+        //var floored = Vector3Int.FloorToInt((worldPosition - originPosition) / cellSize);
+        var floored = Vector3Int.RoundToInt((worldPosition - originPosition) / cellSize);
 
         return new Vector2Int(floored.x, floored.y);
     }

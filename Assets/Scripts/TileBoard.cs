@@ -5,39 +5,49 @@ using UnityEngine;
 
 public class TileBoard : MonoBehaviour
 {
-    public Tile tilePrefab;
-    public Vector2Int boardSize;
+    [SerializeField]
+    private Tile tilePrefab;
+    [SerializeField]
+    private Vector2Int size;
 
     private Tile[,] tiles;
 
     public static TileBoard Instance { get; private set; }
+
+    //private Vector3 Offset => new Vector3((size.x - 1) * .5f, 0, (size.y - 1) * .5f);
 
     private void Start()
     {
         Instance = this;
     }
 
-    public void CreateBoard()
+    public void CreateBoard(bool enableDebugText = false)
     {
-        tiles = new Tile[boardSize.x, boardSize.y];
+        tiles = new Tile[size.x, size.y];
 
-        for (int i = 0; i < tiles.GetLength(0); i++)
+        for (int x = 0; x < tiles.GetLength(0); x++)
         {
-            for (int j = 0; j < tiles.GetLength(1); j++)
+            for (int y = 0; y < tiles.GetLength(1); y++)
             {
-                var prefabPosition = new Vector3Int(i, 0, j);
+                var prefabPosition = new Vector3Int(x, 0, y);
                 var prefab = Instantiate(tilePrefab, this.transform);
-                prefab.transform.position = prefabPosition;
+                prefab.transform.position = prefabPosition;// - Offset;
 
-                tiles[i, j] = prefab;
+                if (enableDebugText)
+                {
+                    prefab.TextSetter.gameObject.SetActive(true);
+                    prefab.TextSetter.SetText($"{x}{y}");
+                }
+
+                tiles[x, y] = prefab;
             }
         }
     }
 
     public bool TryToGetTile(RaycastHit hit, out Tile tile)
     {
-        var roundedVector = Vector3Int.FloorToInt(hit.point);
-        Debug.Log($"Rounded vector {roundedVector}");
+        var roundedVector = Vector3Int.RoundToInt(hit.point);// + Offset);
+
         tile = null;
 
         if (HasTileAtIndex(roundedVector.x, roundedVector.z))
@@ -63,7 +73,7 @@ public class TileBoard : MonoBehaviour
 
     private bool HasTileAtIndex(int x, int y)
     {
-        return x >= 0 && y >= 0 && boardSize.x >= x && boardSize.y >= y;
+        return x >= 0 && y >= 0 && size.x >= x && size.y >= y;
     }
 }
 
