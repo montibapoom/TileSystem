@@ -63,8 +63,8 @@ public class Building : MonoBehaviour
         }
     }
 
-    private bool IsEvenHorizontally => instances.GetLength(0) % 2 == 0;
-    private bool IsEvenVertically => instances.GetLength(1) % 2 == 0;
+    private bool IsWidthEvenHorizontally => instances.GetLength(0) % 2 == 0;
+    private bool IsHeightEvenVertically => instances.GetLength(1) % 2 == 0;
 
     private IEnumerator CreateBuilding(GameObject[,] instances)
     {
@@ -81,11 +81,11 @@ public class Building : MonoBehaviour
 
                 var position = new Vector3((i - offset.x) * prefabScale, (j - offset.y) * prefabScale, 0);
 
-                if (IsEvenHorizontally)
+                if (IsWidthEvenHorizontally)
                 {
                     position += Vector3.right * prefabScale * .5f;
                 }
-                if (IsEvenVertically)
+                if (IsHeightEvenVertically)
                 {
                     position += Vector3.up * prefabScale * .5f;
                 }
